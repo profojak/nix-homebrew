@@ -239,44 +239,16 @@ let
     ${setupTaps prefix.taps}
 
     # Link brew docs
-    ohai "Listing Homebrew prefix."
-    /bin/ls "$HOMEBREW_PREFIX"
-    ohai "Listing share/ in Homebrew prefix."
-    /bin/ls "$HOMEBREW_PREFIX/share"
-    if [[ -e "$HOMEBREW_PREFIX/share/doc" ]] then
-      ohai "Linking share/docs/"
-      /bin/ln -shf "${brew}/docs" "$HOMEBREW_PREFIX/share/doc/homebrew"
-    else
-      ohai "share/docs/ does not exist in Homebrew prefix, skipping..."
-    fi
+     /bin/ln -shf "${brew}/docs" "/opt/homebrew/share/doc/homebrew"
 
     # Link brew manpages
-    ohai "Linking share/man/"
-    /bin/ln -shf "${brew}/manpages/README.md" "$HOMEBREW_PREFIX/share/man/man1/README.md"
-    /bin/ln -shf "${brew}/manpages/brew.1" "$HOMEBREW_PREFIX/share/man/man1/brew.1"
+    /bin/ln -shf "${brew}/manpages/README.md" "/opt/homebrew/share/man/man1/README.md"
+    /bin/ln -shf "${brew}/manpages/brew.1" "/opt/homebrew/share/man/man1/brew.1"
     
     # Link brew shell completions
-    if [[ -e "$HOMEBREW_PREFIX/etc/bash_completion.d" ]] then
-      ohai "Linking etc/bash_completion.d/"
-      /bin/ln -shf "${brew}/completions/bash/brew" "$HOMEBREW_PREFIX/etc/bash_completion.d/brew"
-    else
-      ohai "etc/bash_completion.d/ does not exist in Homebrew prefix, skipping..."
-    fi
-    if [[ -e "$HOMEBREW_PREFIX/share/fish" ]] then
-      ohai "Linking share/fish/"
-      /bin/ln -shf "${brew}/completions/fish/brew.fish" "$HOMEBREW_PREFIX/share/fish/vendor_completions.d/brew.fish"
-    else
-      ohai "share/fish/ does not exist in Homebrew prefix, skipping..."
-    fi
-    ohai "Linking share/zsh/"
-    /bin/ln -shf "${brew}/completions/zsh/_brew" "$HOMEBREW_PREFIX/share/zsh/site-functions/_brew"
-
-    if [[ -e "/opt/homebrew/share" ]] then
-      ohai "/opt/homebrew/share exists, listing!"
-      /bin/ls "/opt/homebrew/share"
-    else
-      ohai "/opt/homebrew/share does not exist."
-    fi
+    /bin/ln -shf "${brew}/completions/bash/brew" "/opt/homebrew/etc/bash_completion.d/brew"
+    /bin/ln -shf "${brew}/completions/fish/brew.fish" "/opt/homebrew/share/fish/vendor_completions.d/brew.fish"
+    /bin/ln -shf "${brew}/completions/zsh/_brew" "/opt/homebrew/share/zsh/site-functions/_brew"
 
     # Make a fake $HOMEBREW_REPOSITORY
     rm -rf "$HOMEBREW_LIBRARY/.homebrew-is-managed-by-nix"
