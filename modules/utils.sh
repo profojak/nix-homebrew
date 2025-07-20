@@ -129,7 +129,9 @@ initialize_prefix() {
 
   directories=(
     bin etc include lib sbin share var opt
+    etc/bash_completion.d share/doc share/man share/man/man1
     share/zsh share/zsh/site-functions
+    share/fish share/fish/vendor_completions.d
     var/homebrew var/homebrew/linked
     Cellar Caskroom Frameworks
   )

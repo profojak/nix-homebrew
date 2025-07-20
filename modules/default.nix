@@ -230,13 +230,25 @@ let
       ${tools.nuke-homebrew-repository} "$HOMEBREW_REPOSITORY"
     fi
 
-    if [[ ! -e "$HOMEBREW_PREFIX/${nixMarker}" ]]; then
+    if [[ ! -e "$HOMEBREW_PREFIX/${nixMarker}" ]] || [[ ! -e "$HOMEBREW_PREFIX/share/man" ]]; then
       initialize_prefix
     fi
 
     # Synthetize $HOMEBREW_LIBRARY
     /bin/ln -shf "${brew}/Library/Homebrew" "$HOMEBREW_LIBRARY/Homebrew"
     ${setupTaps prefix.taps}
+
+    # Link brew docs
+    /bin/ln -shf "${brew}/docs" "$HOMEBREW_PREFIX/share/doc/homebrew"
+
+    # Link brew manpages
+    /bin/ln -shf "${brew}/manpages/README.md" "$HOMEBREW_PREFIX/share/man/man1/README.md"
+    /bin/ln -shf "${brew}/manpages/brew.1" "$HOMEBREW_PREFIX/share/man/man1/brew.1"
+
+    # Link brew shell completions
+    /bin/ln -shf "${brew}/completions/bash/brew" "$HOMEBREW_PREFIX/etc/bash_completion.d/brew"
+    /bin/ln -shf "${brew}/completions/fish/brew.fish" "$HOMEBREW_PREFIX/share/fish/vendor_completions.d/brew.fish"
+    /bin/ln -shf "${brew}/completions/zsh/_brew" "$HOMEBREW_PREFIX/share/zsh/site-functions/_brew"
 
     # Make a fake $HOMEBREW_REPOSITORY
     rm -rf "$HOMEBREW_LIBRARY/.homebrew-is-managed-by-nix"
