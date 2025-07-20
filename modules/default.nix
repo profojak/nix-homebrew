@@ -239,16 +239,33 @@ let
     ${setupTaps prefix.taps}
 
     # Link brew docs
-     /bin/ln -shf "${brew}/docs" "/opt/homebrew/share/doc/homebrew"
+    "''${MKDIR[@]}" "$HOMEBREW_PREFIX/share/doc"
+    "''${CHOWN[@]}" -R "$NIX_HOMEBREW_UID:$NIX_HOMEBREW_GID" "$HOMEBREW_PREFIX/share/doc"
+    "''${CHMOD[@]}" "ug=rwx" "$HOMEBREW_PREFIX/share/doc"
+    /bin/ln -shf "${brew}/docs" "$HOMEBREW_PREFIX/share/doc/homebrew"
 
     # Link brew manpages
-    /bin/ln -shf "${brew}/manpages/README.md" "/opt/homebrew/share/man/man1/README.md"
-    /bin/ln -shf "${brew}/manpages/brew.1" "/opt/homebrew/share/man/man1/brew.1"
+    "''${MKDIR[@]}" "$HOMEBREW_PREFIX/share/man/man1"
+    "''${CHOWN[@]}" -R "$NIX_HOMEBREW_UID:$NIX_HOMEBREW_GID" "$HOMEBREW_PREFIX/share/man"
+    "''${CHMOD[@]}" "ug=rwx" "$HOMEBREW_PREFIX/share/man/man1"
+    /bin/ln -shf "${brew}/manpages/README.md" "$HOMEBREW_PREFIX/share/man/man1/README.md"
+    /bin/ln -shf "${brew}/manpages/brew.1" "$HOMEBREW_PREFIX/share/man/man1/brew.1"
     
     # Link brew shell completions
-    /bin/ln -shf "${brew}/completions/bash/brew" "/opt/homebrew/etc/bash_completion.d/brew"
-    /bin/ln -shf "${brew}/completions/fish/brew.fish" "/opt/homebrew/share/fish/vendor_completions.d/brew.fish"
-    /bin/ln -shf "${brew}/completions/zsh/_brew" "/opt/homebrew/share/zsh/site-functions/_brew"
+    "''${MKDIR[@]}" "$HOMEBREW_PREFIX/etc/bash_completion.d"
+    "''${CHOWN[@]}" -R "$NIX_HOMEBREW_UID:$NIX_HOMEBREW_GID" "$HOMEBREW_PREFIX/etc/bash_completion.d"
+    "''${CHMOD[@]}" "ug=rwx" "$HOMEBREW_PREFIX/etc/bash_completion.d"
+    /bin/ln -shf "${brew}/completions/bash/brew" "$HOMEBREW_PREFIX/etc/bash_completion.d/brew"
+    
+    "''${MKDIR[@]}" "$HOMEBREW_PREFIX/share/fish/vendor_completions.d"
+    "''${CHOWN[@]}" -R "$NIX_HOMEBREW_UID:$NIX_HOMEBREW_GID" "$HOMEBREW_PREFIX/share/fish"
+    "''${CHMOD[@]}" "ug=rwx" "$HOMEBREW_PREFIX/share/fish/vendor_completions.d"
+    /bin/ln -shf "${brew}/completions/fish/brew.fish" "$HOMEBREW_PREFIX/share/fish/vendor_completions.d/brew.fish"
+    
+    "''${MKDIR[@]}" "$HOMEBREW_PREFIX/share/zsh/site-functions"
+    "''${CHOWN[@]}" -R "$NIX_HOMEBREW_UID:$NIX_HOMEBREW_GID" "$HOMEBREW_PREFIX/share/zsh"
+    "''${CHMOD[@]}" "ug=rwx" "$HOMEBREW_PREFIX/share/zsh/site-functions"
+    /bin/ln -shf "${brew}/completions/zsh/_brew" "$HOMEBREW_PREFIX/share/zsh/site-functions/_brew"
 
     # Make a fake $HOMEBREW_REPOSITORY
     rm -rf "$HOMEBREW_LIBRARY/.homebrew-is-managed-by-nix"
